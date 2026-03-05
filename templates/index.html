@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Šachmatai — Gyvas mačas</title>
+
+  <!-- chessboard.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@chessboard/chessboard@0.5.0/dist/chessboard.min.css"
+  />
+
+  <!-- Application CSS -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>♟ AI Šachmatai — Gyvas mačas ♟</h1>
+  </header>
+
+  <main class="main-grid">
+    <!-- Left panel: White AI log -->
+    <section class="log-panel panel-white" aria-label="Baltojo AI žurnalas">
+      <div class="panel-header">
+        <span class="panel-icon">⬜</span> Baltasis AI
+      </div>
+      <div class="log-content" id="balti-ai-log"></div>
+    </section>
+
+    <!-- Center: chess board + controls -->
+    <section class="board-section">
+      <div class="board-controls">
+        <button id="start-btn" class="start-button">
+          ▶ Pradėti žaidimą
+        </button>
+      </div>
+
+      <div id="chess-board"></div>
+
+      <div class="status-bar" id="status-bar">
+        Laukiama žaidimo pradžios…
+      </div>
+    </section>
+
+    <!-- Right panel: Black AI log -->
+    <section class="log-panel panel-black" aria-label="Juodojo AI žurnalas">
+      <div class="panel-header">
+        <span class="panel-icon">⬛</span> Juodasis AI
+      </div>
+      <div class="log-content" id="juodi-ai-log"></div>
+    </section>
+
+    <!-- Bottom: Referee log -->
+    <section class="log-panel panel-referee referee-panel" aria-label="Teisėjo žurnalas">
+      <div class="panel-header">
+        <span class="panel-icon">⚖️</span> Teisėjas (Žaidimo žurnalas)
+      </div>
+      <div class="log-content" id="teisejas-log"></div>
+    </section>
+  </main>
+
+  <!-- Game-over overlay -->
+  <div id="game-over-overlay" class="game-over-overlay hidden">
+    <div class="game-over-box">
+      <div class="game-over-title">Žaidimas baigtas!</div>
+      <div class="game-over-result" id="game-over-result"></div>
+      <div class="game-over-reason" id="game-over-reason"></div>
+      <button id="new-game-btn" class="start-button">↺ Naujas žaidimas</button>
+    </div>
+  </div>
+
+  <!-- chess.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <!-- chessboard.js -->
+  <script src="https://unpkg.com/@chessboard/chessboard@0.5.0/dist/chessboard.min.js"></script>
+  <!-- Socket.IO client -->
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <!-- Application JS -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
