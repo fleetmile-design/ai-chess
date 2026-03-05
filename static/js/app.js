@@ -15,9 +15,9 @@
   var boardConfig = {
     position: 'start',
     draggable: false,
-    pieceTheme: 'https://unpkg.com/@chessboard/chessboard@0.5.0/img/chesspieces/wikipedia/{piece}.png',
+    pieceTheme: '/static/img/chesspieces/wikipedia/{piece}.png',
   };
-  var board = Chessboard('chess-board', boardConfig);
+  var board = ChessBoard('chess-board', boardConfig);
 
   // ── DOM references ─────────────────────────────────────────
   var startBtn      = document.getElementById('start-btn');

@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Šachmatai — Gyvas mačas</title>
 
-  <!-- chessboard.js CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/@chessboard/chessboard@0.5.0/dist/chessboard.min.css"
-  />
+  <!-- chessboard.js CSS (served locally) -->
+  <link rel="stylesheet" href="/static/vendor/chessboard.min.css" />
 
   <!-- Application CSS -->
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -70,12 +67,14 @@
     </div>
   </div>
 
-  <!-- chess.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-  <!-- chessboard.js -->
-  <script src="https://unpkg.com/@chessboard/chessboard@0.5.0/dist/chessboard.min.js"></script>
-  <!-- Socket.IO client -->
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <!-- jQuery (required by chessboard.js, served locally) -->
+  <script src="/static/vendor/jquery.min.js"></script>
+  <!-- chess.js (served locally) -->
+  <script src="/static/vendor/chess.min.js"></script>
+  <!-- chessboard.js (served locally) -->
+  <script src="/static/vendor/chessboard.min.js"></script>
+  <!-- Socket.IO client (served locally) -->
+  <script src="/static/vendor/socket.io.min.js"></script>
   <!-- Application JS -->
   <script src="/static/js/app.js"></script>
 </body>
