@@ -1,0 +1,27 @@
+{
+  "name": "ai-chess",
+  "version": "1.0.0",
+  "description": "> **Lietuviškai** | **English below**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fleetmile-design/ai-chess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/fleetmile-design/ai-chess/issues"
+  },
+  "homepage": "https://github.com/fleetmile-design/ai-chess#readme",
+  "dependencies": {
+    "chess.js": "^0.10.3",
+    "chessboardjs": "^0.0.1",
+    "jquery": "^3.7.1",
+    "socket.io-client": "^4.7.5"
+  }
+}

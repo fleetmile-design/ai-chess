@@ -1,0 +1,278 @@
+/* ============================================================
+   style.css — AI Šachmatai application styles
+   ============================================================ */
+
+/* ---- Reset & base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --white-ai-accent: #7ecfff;
+  --black-ai-accent: #b0b0b0;
+  --referee-accent:  #f5c518;
+  --panel-bg:        #1a1a2e;
+  --panel-text:      #e0e0e0;
+  --header-bg:       #0f0f1a;
+  --board-bg:        #16213e;
+  --border-radius:   8px;
+  --gap:             12px;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0d0d1a;
+  color: var(--panel-text);
+}
+
+/* ---- Header ---- */
+header {
+  background: var(--header-bg);
+  padding: 14px 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--referee-accent);
+}
+
+header h1 {
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  color: var(--referee-accent);
+}
+
+/* ---- Main grid layout ---- */
+/*
+  Columns: [white-panel] [board-section] [black-panel]
+  Row 2 spans all 3 columns: referee log
+*/
+.main-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  grid-template-rows: auto auto;
+  gap: var(--gap);
+  padding: var(--gap);
+  min-height: calc(100vh - 60px);
+}
+
+/* ---- Log panels (shared styles) ---- */
+.log-panel {
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #2a2a4a;
+}
+
+.panel-header {
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.panel-icon {
+  font-size: 1.1rem;
+}
+
+.log-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a5a var(--panel-bg);
+  height: 400px;
+}
+
+.log-content::-webkit-scrollbar {
+  width: 6px;
+}
+.log-content::-webkit-scrollbar-track {
+  background: var(--panel-bg);
+}
+.log-content::-webkit-scrollbar-thumb {
+  background: #3a3a5a;
+  border-radius: 3px;
+}
+
+/* Log entry lines */
+.log-entry {
+  display: block;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  word-break: break-word;
+}
+
+.log-timestamp {
+  color: #555577;
+  font-size: 0.7rem;
+  margin-right: 6px;
+}
+
+/* ---- White AI panel ---- */
+.panel-white .panel-header {
+  color: var(--white-ai-accent);
+  background: rgba(126, 207, 255, 0.07);
+}
+
+/* ---- Black AI panel ---- */
+.panel-black .panel-header {
+  color: var(--black-ai-accent);
+  background: rgba(176, 176, 176, 0.07);
+}
+
+/* ---- Referee panel (bottom row, spans full width) ---- */
+.referee-panel {
+  grid-column: 1 / -1;
+}
+
+.panel-referee .panel-header {
+  color: var(--referee-accent);
+  background: rgba(245, 197, 24, 0.08);
+}
+
+.panel-referee .log-content {
+  height: 160px;
+}
+
+/* ---- Board section ---- */
+.board-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--board-bg);
+  border-radius: var(--border-radius);
+  padding: 20px 16px;
+  border: 1px solid #2a2a4a;
+}
+
+#chess-board {
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ---- Status bar ---- */
+.status-bar {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  color: #aaa;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ---- Start button ---- */
+.start-button {
+  background: var(--referee-accent);
+  color: #0d0d1a;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.start-button:hover:not(:disabled) {
+  background: #ffd740;
+  transform: translateY(-1px);
+}
+
+.start-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.start-button:disabled {
+  background: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* ---- Highlighted move squares ---- */
+.highlight-from {
+  background: rgba(100, 180, 255, 0.4) !important;
+}
+
+.highlight-to {
+  background: rgba(100, 255, 130, 0.4) !important;
+}
+
+/* ---- Game-over overlay ---- */
+.game-over-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.game-over-overlay.hidden {
+  display: none;
+}
+
+.game-over-box {
+  background: #1a1a2e;
+  border: 2px solid var(--referee-accent);
+  border-radius: 12px;
+  padding: 40px 56px;
+  text-align: center;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.game-over-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--referee-accent);
+}
+
+.game-over-result {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.game-over-reason {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .referee-panel {
+    grid-column: 1;
+  }
+
+  .log-content {
+    height: 180px;
+  }
+
+  .panel-referee .log-content {
+    height: 140px;
+  }
+}
