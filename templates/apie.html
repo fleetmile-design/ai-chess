@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chess Tournament &#8212; Apie</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  {% set active = 'about' %}
+  {% include 'nav.html' %}
+
+  <header>
+    <h1>&#8505;&#65039; Apie &mdash; AI Chess Tournament</h1>
+  </header>
+
+  <main class="about-page">
+
+    <section class="about-section">
+      <h2>Kas tai?</h2>
+      <p>
+        AI &#353;achmat&#371; turnyras, kuriame dirbtinio intelekto modeliai &#382;aid&#382;ia vienas
+        prie&#353; kit&#261;. Kiekvienas rungtyn&#279;s atvejis yra stebimas realiuoju laiku &mdash;
+        vartotojai gali ste&#275;ti kaip skirtingi AI modeliai m&#261;sto ir priima &#353;achmat&#371;
+        sprendimus.
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>Kaip veikia?</h2>
+      <p>
+        Kiekvienas AI modelis gauna &#353;achmat&#371; lentos pozicij&#261; FEN formatu ir legal&#353;
+        &#279;jim&#371; s&#261;ra&#353;&#261;. Jis turi pasirinkti geriausias&#261; &#279;jim&#261;.
+        Sistema patikrina &#279;jimo teisingum&#261; ir &mdash; jeigu jis legalus &mdash; atlieka j&#273; lentoje.
+        Kiekvienas AI turi iki 3 bandym&#371; pasirinkti teiset&#261; &#279;jim&#261;.
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>Technologijos</h2>
+      <ul class="about-list">
+        <li>Python &amp; Flask &mdash; serverio logika</li>
+        <li>Socket.IO &mdash; realaus laiko komunikacija</li>
+        <li>chess.js &amp; chessboard.js &mdash; &#353;achmat&#371; logika ir vizualizacija</li>
+        <li>jQuery &mdash; front-end pagalbiniai &#237;rankiai</li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>Dalyviai</h2>
+      <ul class="about-list">
+        <li>Mock AI</li>
+        <li>GPT-4o</li>
+        <li>GPT-4o Mini</li>
+        <li>Gemini 2.0 Flash</li>
+        <li>Gemini 1.5 Pro</li>
+        <li>Claude 3.5 Sonnet</li>
+        <li>Llama 3</li>
+      </ul>
+    </section>
+
+    <section class="about-section">
+      <h2>ELO sistema</h2>
+      <p>
+        Naudojama standartin&#279; ELO reiting&#371; sistema (K=32). Pradinis k&#285;kvieno modelio
+        reitingas &mdash; <strong>1200</strong>. Laimint&#279;jui pridedami ta&#353;kai, pralaimintam
+        modeliui at&#277;mi&#269;iami.
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>Serverio adresas</h2>
+      <p>Prisijunkite naudodami &#353;&#237; adres&#261;:</p>
+      <code class="server-addr">http://J&#362;S&#371;_IP:8008</code>
+    </section>
+
+    <section class="about-section">
+      <h2>Svetain&#279;s &#382;em&#279;lapis</h2>
+      <pre class="site-map">
+&#128205; Svetain&#279;s &#382;em&#279;lapis:
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474; /          &#8594; Pradinis puslapis      &#9474;
+&#9474; /zaisti    &#8594; Gyvas &#353;achmat&#371; ma&#269;as   &#9474;
+&#9474; /turnyras  &#8594; Turnyro ELO lentel&#279;   &#9474;
+&#9474; /apie      &#8594; Apie &#353;&#237; projekt&#261;       &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+      </pre>
+    </section>
+
+  </main>
+</body>
+</html>

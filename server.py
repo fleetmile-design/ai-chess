@@ -31,6 +31,7 @@ load_dotenv()
 AI_MODEL_WHITE = os.getenv("AI_MODEL_WHITE", "mock")
 AI_MODEL_BLACK = os.getenv("AI_MODEL_BLACK", "mock")
 MOVE_DELAY = float(os.getenv("MOVE_DELAY", "2"))
+PORT = int(os.getenv("PORT", "8008"))
 
 # ---------------------------------------------------------------------------
 # Flask / Socket.IO initialisation
@@ -177,8 +178,23 @@ def _game_loop() -> None:
 # Flask routes
 # ---------------------------------------------------------------------------
 @app.route("/")
-def index():
-    return render_template("index.html")
+def landing():
+    return render_template("landing.html")
+
+
+@app.route("/zaisti")
+def game():
+    return render_template("game.html")
+
+
+@app.route("/turnyras")
+def turnyras():
+    return render_template("turnyras.html")
+
+
+@app.route("/apie")
+def apie():
+    return render_template("apie.html")
 
 
 # ---------------------------------------------------------------------------
@@ -202,4 +218,4 @@ def handle_start_game():
 # Entry point
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=False)
+    socketio.run(app, host="0.0.0.0", port=PORT, debug=False)

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chess Tournament &#8212; Turnyro lentel&#279;</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  {% set active = 'tournament' %}
+  {% include 'nav.html' %}
+
+  <header>
+    <h1>&#127942; Turnyro lentel&#279; &mdash; AI Chess Tournament</h1>
+  </header>
+
+  <main class="leaderboard-page">
+    <div class="leaderboard-wrap">
+      <table class="leaderboard-full" id="leaderboard-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Modelis</th>
+            <th>ELO</th>
+            <th>&#381;aidimai</th>
+            <th>W</th>
+            <th>L</th>
+            <th>D</th>
+            <th>Win%</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <!-- Populated by JS; default placeholder rows shown below -->
+          <tr class="rank-gold">
+            <td>1</td><td>Mock AI</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>2</td><td>GPT-4o</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>3</td><td>GPT-4o Mini</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>4</td><td>Gemini 2.0 Flash</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>5</td><td>Gemini 1.5 Pro</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>6</td><td>Claude 3.5 Sonnet</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+          <tr>
+            <td>7</td><td>Llama 3</td><td>1200</td><td>0</td><td>0</td><td>0</td><td>0</td>
+            <td><span class="win-pct win-neutral">-</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="leaderboard-refresh-note" id="leaderboard-status">
+        Atnaujinama kas 10 sek&hellip;
+      </p>
+    </div>
+  </main>
+
+  <script>
+    function winClass(pct) {
+      if (pct === null) return 'win-neutral';
+      if (pct >= 60) return 'win-good';
+      if (pct >= 40) return 'win-mid';
+      return 'win-bad';
+    }
+
+    function renderLeaderboard(data) {
+      var tbody = document.getElementById('leaderboard-body');
+      var rows = '';
+      data.forEach(function(p, i) {
+        var rank = i + 1;
+        var rowClass = rank === 1 ? 'rank-gold' : '';
+        var pct = p.games > 0 ? Math.round(p.wins / p.games * 100) : null;
+        var pctStr = pct !== null ? pct + '%' : '-';
+        rows +=
+          '<tr class="' + rowClass + '">' +
+          '<td>' + rank + '</td>' +
+          '<td>' + p.model + '</td>' +
+          '<td>' + p.elo + '</td>' +
+          '<td>' + p.games + '</td>' +
+          '<td>' + p.wins + '</td>' +
+          '<td>' + p.losses + '</td>' +
+          '<td>' + p.draws + '</td>' +
+          '<td><span class="win-pct ' + winClass(pct) + '">' + pctStr + '</span></td>' +
+          '</tr>';
+      });
+      tbody.innerHTML = rows;
+    }
+
+    function fetchLeaderboard() {
+      fetch('/api/leaderboard')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          renderLeaderboard(data);
+          var now = new Date().toLocaleTimeString('lt-LT');
+          document.getElementById('leaderboard-status').textContent =
+            'Paskutinis atnaujinimas: ' + now + '. Atnaujinama kas 10 sek.';
+        })
+        .catch(function() {
+          // API not available; keep placeholder rows
+        });
+    }
+
+    fetchLeaderboard();
+    setInterval(fetchLeaderboard, 10000);
+  </script>
+</body>
+</html>
