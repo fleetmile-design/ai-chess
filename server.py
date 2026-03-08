@@ -65,13 +65,12 @@ def _game_loop(white_model: str, black_model: str) -> None:
     board = chess.Board()
     move_number = 0
 
-    _log("teisejas", "Teisejas: zaidimas pradetas. Pradine pozicija nustatyta.")
+    _log("teisejas", "Teisėjas: žaidimas pradėtas. Pradinė pozicija nustatyta.")
     socketio.emit("board_update", {"fen": board.fen(), "last_move": None})
-
     while not board.is_game_over():
         with _game_lock:
             if not _game_running:
-                _log("teisejas", "Teisejas: zaidimas sustabdytas.")
+                _log("teisejas", "Teisėjas: žaidimas sustabdytas.")
                 return
 
         # Determine whose turn it is
@@ -230,7 +229,7 @@ def handle_start_game(data=None):
 
     with _game_lock:
         if _game_running:
-            emit("log_update", {"langas": "teisejas", "zinute": "Zaidimas jau vyksta!"})
+            emit("log_update", {"langas": "teisejas", "zinute": "Žaidimas jau vyksta!"})
             return
         _game_running = True
 

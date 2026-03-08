@@ -139,10 +139,10 @@
     overlay.classList.remove('hidden');
 
     startBtn.disabled = false;
-    startBtn.textContent = 'Naujas zaidimas';
+    startBtn.textContent = 'Naujas žaidimas';
     whiteModelSelect.disabled = false;
     blackModelSelect.disabled = false;
-    statusBar.textContent = 'Zaidimas baigtas: ' + resultText;
+    statusBar.textContent = 'Žaidimas baigtas: ' + resultText;
   });
 
   socket.on('leaderboard_update', function (players) {
@@ -183,7 +183,7 @@
     game.reset();
     board.start(false);
     removeHighlights();
-    statusBar.textContent = 'Zaidimas pradedamas...';
+    statusBar.textContent = 'Žaidimas pradedamas...';
 
     // Clear all log panels
     Object.values(logPanels).forEach(function (panel) {
@@ -195,7 +195,7 @@
 
     // Disable start button and model selectors while game is running
     startBtn.disabled = true;
-    startBtn.textContent = 'Zaidimas vyksta...';
+    startBtn.textContent = 'Žaidimas vyksta...';
     whiteModelSelect.disabled = true;
     blackModelSelect.disabled = true;
 
