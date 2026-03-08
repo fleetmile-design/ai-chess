@@ -5,6 +5,16 @@
 (function () {
   'use strict';
 
+  // ── Splash overlay ────────────────────────────────────────
+  var splashOverlay = document.getElementById('splash-overlay');
+  var splashBtn     = document.getElementById('splash-enter-btn');
+
+  if (splashOverlay && splashBtn) {
+    splashBtn.addEventListener('click', function () {
+      splashOverlay.classList.add('hidden');
+    });
+  }
+
   // ── Socket.IO ──────────────────────────────────────────────
   var socket = io();
 
