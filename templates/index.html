@@ -28,6 +28,32 @@
     <!-- Center: chess board + controls -->
     <section class="board-section">
       <div class="board-controls">
+        <div class="model-selectors">
+          <div class="model-selector-group">
+            <label for="white-model-select">⬜ Baltasis AI</label>
+            <select id="white-model-select" class="model-select">
+              <option value="mock" selected>Mock AI</option>
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gpt-4o-mini">GPT-4o Mini</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
+              <option value="llama-3">Llama 3</option>
+            </select>
+          </div>
+          <div class="model-selector-group">
+            <label for="black-model-select">⬛ Juodasis AI</label>
+            <select id="black-model-select" class="model-select">
+              <option value="mock" selected>Mock AI</option>
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gpt-4o-mini">GPT-4o Mini</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
+              <option value="llama-3">Llama 3</option>
+            </select>
+          </div>
+        </div>
         <button id="start-btn" class="start-button">
           ▶ Pradėti žaidimą
         </button>
@@ -51,9 +77,33 @@
     <!-- Bottom: Referee log -->
     <section class="log-panel panel-referee referee-panel" aria-label="Teisėjo žurnalas">
       <div class="panel-header">
-        <span class="panel-icon">⚖️</span> Teisėjas (Žaidimo žurnalas)
+        <span class="panel-icon">&#9878;</span> Teisėjas (Žaidimo žurnalas)
       </div>
       <div class="log-content" id="teisejas-log"></div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="leaderboard-panel" aria-label="Turnyro lentelė">
+      <div class="panel-header">
+        <span class="panel-icon">&#127942;</span> Turnyro lentelė (Leaderboard)
+      </div>
+      <div class="leaderboard-content">
+        <table id="leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Modelis</th>
+              <th>ELO</th>
+              <th>Žaidimai</th>
+              <th>W</th>
+              <th>L</th>
+              <th>D</th>
+              <th>Win%</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 

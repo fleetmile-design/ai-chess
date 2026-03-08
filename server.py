@@ -18,10 +18,11 @@ import threading
 
 import chess
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 from flask_socketio import SocketIO, emit
 
 from ai_player import gauti_ai_ejima
+import elo_manager
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -58,30 +59,29 @@ def _log(langas: str, zinute: str) -> None:
 # ---------------------------------------------------------------------------
 # Game loop (runs in a background thread)
 # ---------------------------------------------------------------------------
-def _game_loop() -> None:
+def _game_loop(white_model: str, black_model: str) -> None:
     global _game_running
 
     board = chess.Board()
     move_number = 0
 
-    _log("teisejas", "⚖️  Teisėjas: žaidimas pradėtas. Pradinė pozicija nustatyta.")
+    _log("teisejas", "Teisėjas: žaidimas pradėtas. Pradinė pozicija nustatyta.")
     socketio.emit("board_update", {"fen": board.fen(), "last_move": None})
-
     while not board.is_game_over():
         with _game_lock:
             if not _game_running:
-                _log("teisejas", "⚖️  Teisėjas: žaidimas sustabdytas.")
+                _log("teisejas", "Teisėjas: žaidimas sustabdytas.")
                 return
 
         # Determine whose turn it is
         if board.turn == chess.WHITE:
             player_color = "white"
-            model_name = AI_MODEL_WHITE
+            model_name = white_model
             langas = "balti_ai"
             color_lt = "Baltieji"
         else:
             player_color = "black"
-            model_name = AI_MODEL_BLACK
+            model_name = black_model
             langas = "juodi_ai"
             color_lt = "Juodieji"
 
@@ -90,7 +90,7 @@ def _game_loop() -> None:
 
         _log(
             "teisejas",
-            f"⚖️  Ejimas #{move_number} -- {color_lt} galvoja... ({len(legal_moves_uci)} legalus ejimiai)",
+            "Ejimas #" + str(move_number) + " -- " + color_lt + " galvoja... (" + str(len(legal_moves_uci)) + " legalus ejimiai)",
         )
 
         # Allow up to 3 attempts per turn
@@ -101,18 +101,18 @@ def _game_loop() -> None:
                 mastymas = result.get("mastymas", "")
                 ejimas = result.get("ejimas", "").strip()
             except Exception as exc:  # noqa: BLE001
-                _log("teisejas", f"⚖️  Klaida gaunant AI atsakyma ({attempt}/3): {exc}")
+                _log("teisejas", "Klaida gaunant AI atsakyma (" + str(attempt) + "/3): " + str(exc))
                 continue
 
             # Log AI thinking to its own panel
-            _log(langas, f"💭 {mastymas}")
-            _log(langas, f"♟  Pasirinktas ejimas: {ejimas}")
+            _log(langas, "Mastymas: " + mastymas)
+            _log(langas, "Pasirinktas ejimas: " + ejimas)
 
             # Validate the move
             try:
                 move = chess.Move.from_uci(ejimas)
             except chess.InvalidMoveError:
-                _log("teisejas", f"⚖️  Neteisetas ejimas (bandymas {attempt}/3): '{ejimas}' - netinkamas UCI formatas.")
+                _log("teisejas", "Neteisetas ejimas (bandymas " + str(attempt) + "/3): '" + ejimas + "' - netinkamas UCI formatas.")
                 continue
 
             if move in board.legal_moves:
@@ -121,12 +121,15 @@ def _game_loop() -> None:
             else:
                 _log(
                     "teisejas",
-                    f"⚖️  Neteisetas ejimas (bandymas {attempt}/3): '{ejimas}' nera tarp legaliu ejimu.",
+                    "Neteisetas ejimas (bandymas " + str(attempt) + "/3): '" + ejimas + "' nera tarp legaliu ejimu.",
                 )
 
         if chosen_move_uci is None:
-            _log("teisejas", f"⚖️  {color_lt} nepateike teiseto ejimo po 3 bandymu. Zaidimas nutraukiamas.")
-            socketio.emit("game_over", {"result": "error", "reason": f"{color_lt} nepateike teiseto ejimo."})
+            _log("teisejas", color_lt + " nepateike teiseto ejimo po 3 bandymu. Zaidimas nutraukiamas.")
+            socketio.emit("game_over", {"result": "error", "reason": color_lt + " nepateike teiseto ejimo."})
+            # Update ELO for error result
+            elo_result = elo_manager.update_elo(white_model, black_model, "error")
+            socketio.emit("leaderboard_update", elo_manager.get_leaderboard())
             break
 
         # Push the move
@@ -137,7 +140,7 @@ def _game_loop() -> None:
         from_sq = chosen_move_uci[:2]
         to_sq = chosen_move_uci[2:4]
 
-        _log("teisejas", f"⚖️  {color_lt}: {san_move} ({chosen_move_uci})")
+        _log("teisejas", color_lt + ": " + san_move + " (" + chosen_move_uci + ")")
         socketio.emit(
             "board_update",
             {
@@ -166,8 +169,23 @@ def _game_loop() -> None:
         else:
             reason = "Zaidimas baigtas."
 
-        _log("teisejas", f"⚖️  Zaidimas baigtas: {result} - {reason}")
+        _log("teisejas", "Zaidimas baigtas: " + result + " - " + reason)
         socketio.emit("game_over", {"result": result, "reason": reason})
+
+        # Update ELO ratings and broadcast leaderboard
+        elo_result = elo_manager.update_elo(white_model, black_model, result)
+        w_change = elo_result["white"]["change"]
+        b_change = elo_result["black"]["change"]
+        w_sign = "+" if w_change >= 0 else ""
+        b_sign = "+" if b_change >= 0 else ""
+        _log(
+            "teisejas",
+            "ELO: " + white_model + " " + w_sign + str(w_change)
+            + " (" + str(elo_result["white"]["new_elo"]) + ") | "
+            + black_model + " " + b_sign + str(b_change)
+            + " (" + str(elo_result["black"]["new_elo"]) + ")",
+        )
+        socketio.emit("leaderboard_update", elo_manager.get_leaderboard())
 
     with _game_lock:
         _game_running = False
@@ -181,20 +199,41 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/api/leaderboard")
+def api_leaderboard():
+    return jsonify(elo_manager.get_leaderboard())
+
+
 # ---------------------------------------------------------------------------
 # Socket.IO events
 # ---------------------------------------------------------------------------
+@socketio.on("connect")
+def handle_connect():
+    emit("leaderboard_update", elo_manager.get_leaderboard())
+
+
+@socketio.on("request_leaderboard")
+def handle_request_leaderboard():
+    emit("leaderboard_update", elo_manager.get_leaderboard())
+
+
 @socketio.on("start_game")
-def handle_start_game():
+def handle_start_game(data=None):
     global _game_running
+
+    if data is None:
+        data = {}
+
+    white_model = data.get("white_model") or AI_MODEL_WHITE
+    black_model = data.get("black_model") or AI_MODEL_BLACK
 
     with _game_lock:
         if _game_running:
-            emit("log_update", {"langas": "teisejas", "zinute": "⚖️  Žaidimas jau vyksta!"})
+            emit("log_update", {"langas": "teisejas", "zinute": "Žaidimas jau vyksta!"})
             return
         _game_running = True
 
-    thread = threading.Thread(target=_game_loop, daemon=True)
+    thread = threading.Thread(target=_game_loop, args=(white_model, black_model), daemon=True)
     thread.start()
 
 

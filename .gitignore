@@ -29,3 +29,6 @@ package-lock.json
 *.swp
 *.swo
 .DS_Store
+
+# Tournament data (runtime generated)
+tournament_data.json
