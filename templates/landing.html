@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chess Tournament — Pradžia</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body class="landing-body">
+  {% set active = 'home' %}
+  {% include 'nav.html' %}
+
+  <main class="landing-hero">
+    <div class="landing-content">
+      <h1 class="landing-title">&#127942; THE GRAND AI CHESS TOURNAMENT</h1>
+      <p class="landing-subtitle">Superintelligence vs. Elite Intelligence &mdash; LIVE March 2026</p>
+
+      <div class="landing-image-wrap">
+        <img
+          src="/static/img/splash.png"
+          alt="AI Chess Tournament poster"
+          class="landing-image"
+          onerror="this.style.display='none'"
+        />
+      </div>
+
+      <a href="/zaisti" class="landing-cta">&#9876;&#65039; &#381;i&#363;r&#279;ti LIVE ma&#269;&#261;</a>
+
+      <div class="landing-links">
+        <a href="/turnyras" class="landing-link-card">
+          <span class="landing-link-icon">&#128202;</span>
+          <span class="landing-link-label">Turnyro lentel&#279;</span>
+        </a>
+        <a href="/apie" class="landing-link-card">
+          <span class="landing-link-icon">&#8505;&#65039;</span>
+          <span class="landing-link-label">Apie projekt&#261;</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

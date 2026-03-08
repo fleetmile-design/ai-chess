@@ -276,3 +276,307 @@ header h1 {
     height: 140px;
   }
 }
+
+/* ============================================================
+   Navigation bar
+   ============================================================ */
+.main-nav {
+  background: var(--header-bg);
+  border-bottom: 2px solid var(--referee-accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-brand {
+  color: var(--referee-accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.nav-link {
+  color: #888;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  font-size: 0.9rem;
+}
+
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link.active {
+  color: var(--referee-accent);
+  border-bottom: 2px solid var(--referee-accent);
+}
+
+/* ============================================================
+   Landing / Splash page
+   ============================================================ */
+.landing-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+}
+
+.landing-title {
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 900;
+  color: var(--referee-accent);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 24px rgba(245, 197, 24, 0.5);
+}
+
+.landing-subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+  color: #b0b0c0;
+}
+
+.landing-image-wrap {
+  width: 100%;
+}
+
+.landing-image {
+  max-width: 600px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 48px rgba(245, 197, 24, 0.35), 0 8px 32px rgba(0, 0, 0, 0.6);
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 18px rgba(245, 197, 24, 0.6); }
+  50%       { box-shadow: 0 0 40px rgba(0, 220, 255, 0.8); }
+}
+
+.landing-cta {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--referee-accent), #00dcff);
+  color: #0d0d1a;
+  font-size: 1.2rem;
+  font-weight: 800;
+  padding: 18px 48px;
+  border-radius: 8px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  animation: pulse-glow 2.4s ease-in-out infinite;
+  transition: transform 0.15s;
+}
+
+.landing-cta:hover {
+  transform: translateY(-2px);
+}
+
+.landing-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.landing-link-card {
+  background: var(--panel-bg);
+  border: 1px solid #2a2a4a;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  text-decoration: none;
+  color: var(--panel-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.landing-link-card:hover {
+  border-color: var(--referee-accent);
+  background: rgba(245, 197, 24, 0.06);
+}
+
+.landing-link-icon {
+  font-size: 1.8rem;
+}
+
+.landing-link-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Tournament / Leaderboard page
+   ============================================================ */
+.leaderboard-page {
+  padding: 24px 20px;
+}
+
+.leaderboard-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.leaderboard-full {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid #2a2a4a;
+}
+
+.leaderboard-full th {
+  background: rgba(245, 197, 24, 0.1);
+  color: var(--referee-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.82rem;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--referee-accent);
+}
+
+.leaderboard-full td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--panel-text);
+}
+
+.leaderboard-full tr:last-child td {
+  border-bottom: none;
+}
+
+.leaderboard-full tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.rank-gold td {
+  background: rgba(245, 197, 24, 0.07);
+  font-weight: 700;
+}
+
+.win-pct {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.win-good    { background: rgba(0, 200, 80, 0.18);  color: #4ade80; }
+.win-mid     { background: rgba(245, 197, 24, 0.18); color: var(--referee-accent); }
+.win-bad     { background: rgba(220, 60, 60, 0.18);  color: #f87171; }
+.win-neutral { background: rgba(255, 255, 255, 0.07); color: #888; }
+
+.leaderboard-refresh-note {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: #555577;
+  text-align: right;
+}
+
+/* ============================================================
+   About page
+   ============================================================ */
+.about-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.about-section h2 {
+  font-size: 1.2rem;
+  color: var(--referee-accent);
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(245, 197, 24, 0.2);
+  padding-bottom: 6px;
+}
+
+.about-section p {
+  color: var(--panel-text);
+  line-height: 1.7;
+}
+
+.about-list {
+  list-style: disc;
+  padding-left: 22px;
+  color: var(--panel-text);
+  line-height: 1.9;
+}
+
+.server-addr {
+  display: inline-block;
+  background: var(--panel-bg);
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 1.05rem;
+  color: #00dcff;
+  margin-top: 8px;
+}
+
+.site-map {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.88rem;
+  background: var(--panel-bg);
+  border: 1px solid #2a2a4a;
+  border-radius: var(--border-radius);
+  padding: 18px 22px;
+  color: var(--panel-text);
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.8;
+}
+
+/* ---- Responsive additions ---- */
+@media (max-width: 600px) {
+  .landing-links {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+}
+
