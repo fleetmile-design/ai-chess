@@ -268,6 +268,10 @@ header h1 {
     grid-column: 1;
   }
 
+  .leaderboard-panel {
+    grid-column: 1;
+  }
+
   .log-content {
     height: 180px;
   }
@@ -275,4 +279,165 @@ header h1 {
   .panel-referee .log-content {
     height: 140px;
   }
+}
+
+/* ---- Model selector dropdowns ---- */
+.model-selectors {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.model-selector-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.model-selector-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--panel-text);
+  text-transform: uppercase;
+}
+
+.model-select {
+  background: #1a1a2e;
+  color: var(--panel-text);
+  border: 1px solid var(--referee-accent);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'Consolas', 'Courier New', monospace;
+  min-width: 160px;
+}
+
+.model-select:focus {
+  outline: none;
+  border-color: #ffd740;
+  box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.25);
+}
+
+.model-select:disabled {
+  border-color: #555;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* ---- Leaderboard panel ---- */
+.leaderboard-panel {
+  grid-column: 1 / -1;
+  background: var(--panel-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid #2a2a4a;
+  overflow: hidden;
+}
+
+.leaderboard-panel .panel-header {
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--referee-accent);
+  background: rgba(245, 197, 24, 0.08);
+}
+
+.leaderboard-content {
+  padding: 12px;
+  overflow-x: auto;
+}
+
+#leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.82rem;
+}
+
+#leaderboard-table thead tr {
+  border-bottom: 2px solid var(--referee-accent);
+}
+
+#leaderboard-table th {
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--referee-accent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+#leaderboard-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--panel-text);
+}
+
+#leaderboard-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Rank #1 gold highlight */
+#leaderboard-table tbody tr.rank-first td {
+  border-top: 1px solid rgba(245, 197, 24, 0.4);
+  border-bottom: 1px solid rgba(245, 197, 24, 0.4);
+}
+
+#leaderboard-table tbody tr.rank-first {
+  box-shadow: 0 0 8px rgba(245, 197, 24, 0.15);
+}
+
+.rank-cell {
+  color: #888;
+  width: 40px;
+}
+
+#leaderboard-table tbody tr.rank-first .rank-cell {
+  color: var(--referee-accent);
+  font-weight: 900;
+}
+
+.name-cell {
+  font-weight: 600;
+  color: #fff;
+}
+
+.elo-cell {
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.wins-cell {
+  color: #6fcf6f;
+}
+
+.losses-cell {
+  color: #cf6f6f;
+}
+
+/* Win% color coding */
+.win-pct-high {
+  color: #6fcf6f;
+  font-weight: 600;
+}
+
+.win-pct-mid {
+  color: var(--referee-accent);
+  font-weight: 600;
+}
+
+.win-pct-low {
+  color: #cf6f6f;
+  font-weight: 600;
 }

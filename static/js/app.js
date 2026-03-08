@@ -20,12 +20,15 @@
   var board = ChessBoard('chess-board', boardConfig);
 
   // ── DOM references ─────────────────────────────────────────
-  var startBtn      = document.getElementById('start-btn');
-  var newGameBtn    = document.getElementById('new-game-btn');
-  var statusBar     = document.getElementById('status-bar');
-  var overlay       = document.getElementById('game-over-overlay');
-  var overlayResult = document.getElementById('game-over-result');
-  var overlayReason = document.getElementById('game-over-reason');
+  var startBtn        = document.getElementById('start-btn');
+  var newGameBtn      = document.getElementById('new-game-btn');
+  var statusBar       = document.getElementById('status-bar');
+  var overlay         = document.getElementById('game-over-overlay');
+  var overlayResult   = document.getElementById('game-over-result');
+  var overlayReason   = document.getElementById('game-over-reason');
+  var whiteModelSelect = document.getElementById('white-model-select');
+  var blackModelSelect = document.getElementById('black-model-select');
+  var leaderboardBody  = document.getElementById('leaderboard-body');
 
   var logPanels = {
     teisejas: document.getElementById('teisejas-log'),
@@ -44,6 +47,12 @@
     var mm = String(now.getMinutes()).padStart(2, '0');
     var ss = String(now.getSeconds()).padStart(2, '0');
     return hh + ':' + mm + ':' + ss;
+  }
+
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
   }
 
   function appendLog(panelId, text) {
@@ -130,8 +139,41 @@
     overlay.classList.remove('hidden');
 
     startBtn.disabled = false;
-    startBtn.textContent = '↺ Naujas žaidimas';
-    statusBar.textContent = 'Žaidimas baigtas: ' + resultText;
+    startBtn.textContent = 'Naujas zaidimas';
+    whiteModelSelect.disabled = false;
+    blackModelSelect.disabled = false;
+    statusBar.textContent = 'Zaidimas baigtas: ' + resultText;
+  });
+
+  socket.on('leaderboard_update', function (players) {
+    if (!leaderboardBody) return;
+    leaderboardBody.innerHTML = '';
+    players.forEach(function (p, index) {
+      var rank = index + 1;
+      var winPct = p.win_pct !== null && p.win_pct !== undefined ? p.win_pct.toFixed(1) + '%' : '&mdash;';
+      var winPctClass = '';
+      if (p.win_pct !== null && p.win_pct !== undefined) {
+        if (p.win_pct > 60) winPctClass = 'win-pct-high';
+        else if (p.win_pct >= 40) winPctClass = 'win-pct-mid';
+        else winPctClass = 'win-pct-low';
+      }
+      var tr = document.createElement('tr');
+      if (rank === 1) tr.classList.add('rank-first');
+      tr.innerHTML =
+        '<td class="rank-cell">' + rank + '</td>' +
+        '<td class="name-cell">' + escapeHtml(p.name) + '</td>' +
+        '<td class="elo-cell">' + p.elo + '</td>' +
+        '<td>' + (p.games || '&mdash;') + '</td>' +
+        '<td class="wins-cell">' + (p.wins || 0) + '</td>' +
+        '<td class="losses-cell">' + (p.losses || 0) + '</td>' +
+        '<td>' + (p.draws || 0) + '</td>' +
+        '<td class="' + winPctClass + '">' + winPct + '</td>';
+      leaderboardBody.appendChild(tr);
+    });
+  });
+
+  socket.on('connect', function () {
+    socket.emit('request_leaderboard');
   });
 
   // ── Button handlers ────────────────────────────────────────
@@ -141,7 +183,7 @@
     game.reset();
     board.start(false);
     removeHighlights();
-    statusBar.textContent = 'Žaidimas pradedamas…';
+    statusBar.textContent = 'Zaidimas pradedamas...';
 
     // Clear all log panels
     Object.values(logPanels).forEach(function (panel) {
@@ -151,17 +193,24 @@
     // Hide game-over overlay
     overlay.classList.add('hidden');
 
-    // Disable start button while game is running
+    // Disable start button and model selectors while game is running
     startBtn.disabled = true;
-    startBtn.textContent = '▶ Žaidimas vyksta…';
+    startBtn.textContent = 'Zaidimas vyksta...';
+    whiteModelSelect.disabled = true;
+    blackModelSelect.disabled = true;
 
-    // Notify server
-    socket.emit('start_game');
+    // Notify server with selected models
+    socket.emit('start_game', {
+      white_model: whiteModelSelect.value,
+      black_model: blackModelSelect.value,
+    });
   }
 
   startBtn.addEventListener('click', startGame);
   newGameBtn.addEventListener('click', function () {
     overlay.classList.add('hidden');
+    whiteModelSelect.disabled = false;
+    blackModelSelect.disabled = false;
     startGame();
   });
 
